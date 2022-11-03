@@ -254,20 +254,6 @@ function GM:PlayerSpawn(pl)
 		end
 	end
 
-	for bonename, scale in pairs(self.BoneScales) do
-		local boneid = pl:LookupBone(bonename)
-		if boneid then
-			pl:ManipulateBoneScale(boneid, scale)
-		end
-	end
-
-	if not self.NoFlex then
-		pl:SetFlexScale(1.5)
-		for i=1, 45 do
-			pl:SetFlexWeight(i, math.Rand(0, 2))
-		end
-	end
-
 	pl:SetGravity(1)
 end
 
@@ -613,7 +599,7 @@ function GM:PlayerCanJoinTeam(ply, teamid)
 				return false
 			end
 		elseif ply:Team() ~= TEAM_UNASSIGNED then
-			if (NumTeamJoins[uid] or 0) > 2 then
+			if (NumTeamJoins[uid] or 0) > 0 then
 				ply:ChatPrint("You cannot swap teams anymore this match.")
 				return false
 			elseif GAMEMODE.AutomaticTeamBalance then

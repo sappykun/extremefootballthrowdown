@@ -210,17 +210,6 @@ function GM:Think()
 	for _, pl in pairs(player.GetAll()) do
 		pl:SetIK(false)
 
-		local rag = pl:GetRagdollEntity()
-		if rag and rag:IsValid() and not rag.ScaledBones then
-			rag.ScaledBones = true
-			for bonename, scale in pairs(self.BoneScales) do
-				local boneid = rag:LookupBone(bonename)
-				if boneid then
-					rag:ManipulateBoneScale(boneid, scale)
-				end
-			end
-		end
-
 		if pl:Alive() and pl:GetObserverMode() == OBS_MODE_NONE then
 			if pl == lp then
 				pl:ThinkSelf()
