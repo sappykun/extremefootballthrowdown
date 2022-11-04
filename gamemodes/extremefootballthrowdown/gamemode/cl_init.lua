@@ -1,5 +1,7 @@
 include("sh_globals.lua")
 
+include("cl_help.lua")
+include("cl_splashscreen.lua")
 include("cl_obj_entity_extend.lua")
 include("cl_obj_player_extend.lua")
 
@@ -64,6 +66,13 @@ language.Add("prop_ball", "Ball")
 
 function BetterScreenScale()
 	return math_max(0.6, math_min(1, ScrH() / 1080))
+end
+
+function GM:InitPostEntity()
+	if ( GAMEMODE.TeamBased and !GAMEMODE.UseAutoJoin ) then
+		GAMEMODE:ShowTeam();
+	end
+	GAMEMODE:ShowSplash();
 end
 
 function GM:HookGetLocal()

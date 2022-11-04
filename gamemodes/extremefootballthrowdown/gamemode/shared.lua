@@ -21,7 +21,7 @@ GM.Help	= "Get the ball in to the enemy goal.\n\nYou speed up over time and lose
 
 GM.TeamBased = true
 GM.AllowAutoTeam = true
-GM.UseAutoJoin = true
+GM.UseAutoJoin = false
 
 GM.AllowSpectating = true
 GM.ValidSpectatorModes = {OBS_MODE_CHASE, OBS_MODE_IN_EYE, OBS_MODE_ROAMING}
@@ -91,6 +91,11 @@ end)
 GM.Pity = CreateConVar("eft_pity", "3", FCVAR_REPLICATED + FCVAR_ARCHIVE + FCVAR_NOTIFY, "If a team is up by this many points, the other team receives speed buffs with the ball."):GetInt()
 cvars.AddChangeCallback("eft_pity", function(cvar, oldvalue, newvalue)
 	GAMEMODE.Pity = math.max(tonumber(newvalue) or 0, 0)
+end)
+
+GM.UseAutoJoin = CreateConVar("eft_useautojoin", "0", FCVAR_REPLICATED + FCVAR_ARCHIVE + FCVAR_NOTIFY, "Forces automatic team selection and disables manual team changes."):GetBool()
+cvars.AddChangeCallback("eft_useautojoin", function(cvar, oldvalue, newvalue)
+	GAMEMODE.UseAutoJoin = newvalue
 end)
 
 function team.HasPity(teamid)

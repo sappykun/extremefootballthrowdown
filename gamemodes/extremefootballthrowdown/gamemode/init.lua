@@ -1,4 +1,6 @@
 AddCSLuaFile("cl_init.lua")
+AddCSLuaFile("cl_help.lua")
+AddCSLuaFile("cl_splashscreen.lua")
 AddCSLuaFile("shared.lua")
 AddCSLuaFile("sh_globals.lua")
 
@@ -580,7 +582,12 @@ function GM:PlayerCanJoinTeam(ply, teamid)
 		return false
 	end
 
-	if ply.AutoJoiningTeam then return true end
+	if ply.AutoJoiningTeam then
+		if (GAMEMODE.UseAutoJoin and !(ply:Team() == TEAM_SPECTATOR or ply:Team() == TEAM_UNASSIGNED)) then
+			return false
+		end
+		return true
+	end
 
 	local TimeBetweenSwitches = GAMEMODE.Competitive and 5 or GAMEMODE.SecondsBetweenTeamSwitches or 10
 	if ply.LastTeamSwitch and RealTime() - ply.LastTeamSwitch < TimeBetweenSwitches then
@@ -599,7 +606,7 @@ function GM:PlayerCanJoinTeam(ply, teamid)
 				return false
 			end
 		elseif ply:Team() ~= TEAM_UNASSIGNED then
-			if (NumTeamJoins[uid] or 0) > 0 then
+			if (NumTeamJoins[uid] or 0) > 2 or GAMEMODE.UseAutoJoin then
 				ply:ChatPrint("You cannot swap teams anymore this match.")
 				return false
 			elseif GAMEMODE.AutomaticTeamBalance then
